@@ -1,23 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import Form from "./components/Form";
+import PackingList from "./components/PackingList";
+import Stats from "./components/Stats";
+import Logo from "./components/logo";
+import { useState } from "react";
 
 function App() {
+  const [items, setItems] = useState([]);
+  function handleSubmit(e) {
+    e.preventDefault();
+    console.log(e.target[0].value);
+    console.log(e.target[1].value);
+    const item = {
+      id: Date.now(),
+      description: e.target[1].value,
+      quantity: e.target[0].value,
+      packed: false,
+    };
+    setItems([...items, item]);
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app">
+      <Logo />
+      <Form handleSubmit={handleSubmit} />
+      <PackingList newItem={items} />
+      <Stats />
     </div>
   );
 }
