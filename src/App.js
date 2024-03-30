@@ -7,24 +7,41 @@ import { useState } from "react";
 
 function App() {
   const [items, setItems] = useState([]);
+
   function handleSubmit(e) {
     e.preventDefault();
-    console.log(e.target[0].value);
-    console.log(e.target[1].value);
+
+    const userInputItem = e.target[1].value;
+    if (userInputItem.trim() === "") {
+      alert("Empty Item,Please add an Item...");
+      return;
+    }
     const item = {
       id: Date.now(),
       description: e.target[1].value,
       quantity: e.target[0].value,
       packed: false,
     };
-    setItems([...items, item]);
+    setItems([item, ...items]);
+  }
+  function handleDeleteClick(id) {
+    setItems(items.filter((item) => item.id !== id));
+  }
+  function handleCheckbox(id) {
+    const checkedItem = items.findIndex((i) => i.id == id);
+    items[checkedItem].packed = !items[checkedItem].packed;
+    setItems([...items]);
   }
   return (
     <div className="app">
       <Logo />
       <Form handleSubmit={handleSubmit} />
-      <PackingList newItem={items} />
-      <Stats />
+      <PackingList
+        newItem={items}
+        handleDelete={handleDeleteClick}
+        handleCheckbox={handleCheckbox}
+      />
+      <Stats items={items} />
     </div>
   );
 }
