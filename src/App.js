@@ -28,9 +28,13 @@ function App() {
     setItems(items.filter((item) => item.id !== id));
   }
   function handleCheckbox(id) {
-    const checkedItem = items.findIndex((i) => i.id == id);
-    items[checkedItem].packed = !items[checkedItem].packed;
-    setItems([...items]);
+    const updatedItems = items.map((item) =>
+      item.id === id ? { ...item, packed: !item.packed } : item
+    );
+    setItems(updatedItems);
+  }
+  function handleDeleteList() {
+    setItems(() => []);
   }
   return (
     <div className="app">
@@ -40,7 +44,9 @@ function App() {
         newItem={items}
         handleDelete={handleDeleteClick}
         handleCheckbox={handleCheckbox}
+        handleDeleteList={handleDeleteList}
       />
+
       <Stats items={items} />
     </div>
   );
